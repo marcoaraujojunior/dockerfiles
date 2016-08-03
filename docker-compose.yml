@@ -1,16 +1,17 @@
 version: '2'
 services:
-    nginx:
+    apache:
         build:
             context: .
-            dockerfile: dockerfile.nginx
-        container_name: nginx
+            dockerfile: dockerfile.apache
+        container_name: apache
         restart: always
         ports:
          - "8080:80"
+         - "8443:443"
         volumes:
-         - html:/var/www
-         - sites-enabled:/etc/nginx/sites-enabled
+         - html:/usr/local/apache2/htdocs/
+         - sites-enabled:/etc/apache2/sites-enabled
         links:
          - php-7
          - php-56
