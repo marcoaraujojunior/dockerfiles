@@ -1,0 +1,10 @@
+FROM ubuntu:16.04
+
+MAINTAINER Marco Araujo <marco.araujo.junior@gmail.com>
+
+RUN sudo apt-get update
+RUN sudo apt-get install -y \
+    git \
+    vim \
+    
+

@@ -1,10 +1,8 @@
 version: '2'
 services:
-    apache:
-        build:
-            context: .
-            dockerfile: dockerfile.apache
-        container_name: apache
+    php-7:
+        image: php:7.0-apache
+        container_name: php-7
         restart: always
         ports:
          - "8080:80"
@@ -13,33 +11,19 @@ services:
          - html:/usr/local/apache2/htdocs/
          - sites-enabled:/etc/apache2/sites-enabled
         links:
-         - php-7
-         - php-56
-
-    php-56:
-        build:
-            context: .
-            dockerfile: dockerfile.php56
-        container_name: php-56
-        restart: always
-        ports:
-         - "9090:9000"
-        volumes:
-         - html:/var/www
-        links:
          - postgres
          - mongo
 
-    php-7:
-        build:
-            context: .
-            dockerfile: dockerfile.php7
-        container_name: php-7
+    php-56:
+        image: php:5.6-apache
+        container_name: php-56
         restart: always
         ports:
-         - "9000:9000"
+         - "8080:80"
+         - "8443:443"
         volumes:
-         - html:/var/www
+         - html:/usr/local/apache2/htdocs/
+         - sites-enabled:/etc/apache2/sites-enabled
         links:
          - postgres
          - mongo
@@ -49,18 +33,15 @@ services:
             context: .
             dockerfile: dockerfile.node
         container_name: node
+        command: [npm, start]
         restart: always
         ports:
-         - "3030:3000"
+         - "8888:8080"
         volumes:
-         - html:/var/www
-        links:
-         - mongo
+            - html:/html
 
     postgres:
-        build:
-            context: .
-            dockerfile: dockerfile.postgres
+        image: postgres:9.5
         container_name: postgres
         restart: always
         ports:
@@ -69,9 +50,7 @@ services:
          - postgres:/usr/local/pgsql/data
 
     mongo:
-        build:
-            context: .
-            dockerfile: dockerfile.mongo
+        image: mongo:3.2
         container_name: mongo
         restart: always
         ports:
@@ -89,7 +68,7 @@ services:
          - "2222:22"
         volumes:
          - html:/projects
-         - sites-enabled:/projects/sites-enabled
+         - sites-enabled:/sites-enabled
         links:
          - php-7
          - php-56
@@ -98,11 +77,7 @@ services:
 
 volumes:
     html:
-        external: true
     mongo:
-        external: true
     postgres:
-        external: true
     sites-enabled:
-        external: true
 
