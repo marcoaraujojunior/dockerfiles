@@ -7,6 +7,7 @@ services:
         ports:
          - "7080:80"
          - "7443:443"
+         - "7090:9000"
         volumes:
          - html:/var/www/html
          - sites-enabled:/etc/apache2/sites-enabled
@@ -21,6 +22,7 @@ services:
         ports:
          - "5080:80"
          - "5443:443"
+         - "5090:9000"
         volumes:
          - html:/var/www/html
          - sites-enabled:/etc/apache2/sites-enabled
@@ -72,6 +74,7 @@ services:
         volumes_from:
          - php-7:rw
         links:
+         - php-7
          - php-56
          - postgres
          - mongo
